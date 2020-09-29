@@ -31,4 +31,3 @@ if __name__ == '__main__':
     for text, reversed_text in cases:
         assert reverse_words(text) == reversed_text
         print(reverse_words(text))
-    print(reverse_words(True))

@@ -1,41 +1,39 @@
 import unittest
-from anagrams import anagrams
+import sys
+
+sys.path.insert(0, '../anagrams')
+import anagrams
+
+expected_cases = [
+    ('', ''),
+    ('kevin', 'nivek'),
+    ('kevin alone at home', 'nivek enola ta emoh'),
+    ('ke!vin al2one at ho*me', 'ni!vek en2ola ta em*oh'),
+    ('русский текст', 'йикссур тскет'),
+    ('українский текст', 'йикснїарку тскет'),
+    ('%*&)(@! *((()))$', '%*&)(@! *((()))$'),
+    ('aannaggrrams', 'smarrggannaa'),
+    ('KeVin', 'niVeK'),
+]
+
+unexpected_cases = [
+    (1, TypeError),
+    (True, TypeError),
+    (1+2j, TypeError),
+    (0, TypeError),
+]
 
 
 class TestAnagrams(unittest.TestCase):
-    def test_empty_string(self):
-        self.assertEqual(anagrams.reverse_words(''), '')
+    def test_works_as_expected(self):
+        for p, exp in expected_cases:
+            with self.subTest():
+                self.assertEqual(anagrams.reverse_words(p), exp)
 
-    def test_one_word(self):
-        self.assertEqual(anagrams.reverse_words('kevin'), 'nivek')
-
-    def test_words(self):
-        self.assertEqual(anagrams.reverse_words('kevin alone at home'), 'nivek enola ta emoh')
-
-    def test_words_with_another_symbols(self):
-        self.assertEqual(anagrams.reverse_words('ke!vin al2one at ho*me'), 'ni!vek en2ola ta em*oh')
-
-    def test_words_in_russian(self):
-        self.assertEqual(anagrams.reverse_words('русский текст'), 'йикссур тскет')
-
-    def test_words_in_ukrainian(self):
-        self.assertEqual(anagrams.reverse_words('українский текст'), 'йикснїарку тскет')
-
-    def test_only_symbols(self):
-        self.assertEqual(anagrams.reverse_words('%*&)(@! *((()))$'), '%*&)(@! *((()))$')
-
-    def test_repeated_words(self):
-        self.assertEqual(anagrams.reverse_words('aannaggrrams'), 'smarrggannaa')
-
-    def test_upper_lower_cases(self):
-        self.assertEqual(anagrams.reverse_words('KeVin'), 'niVeK')
-
-    def test_digit(self):
-        self.assertRaises(TypeError, anagrams.reverse_words, 1)
-
-    def test_boolean(self):
-        self.assertRaises(TypeError, anagrams.reverse_words, True)
-
+    def test_works_as_not_expected(self):
+        for p, exp in unexpected_cases:
+            with self.subTest():
+                self.assertRaises(exp, anagrams.reverse_words, p)
 
 
 if __name__ == '__main__':
